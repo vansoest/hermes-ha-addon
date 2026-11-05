@@ -891,7 +891,15 @@ start_gateway_for_profile() {
     GATEWAY_READY_FILES[$i]="$ready_file"
     (
         cd "$home"
-        export HERMES_HOME="$home"
+        # Multiplex topology (#43): slot-0 gateway IS the root multiplexer. Its control
+        # socket must bind at the ROOT home ($HERMES_HOME/.. of profiles) because client
+        # discovery resolves multiplexer_root_for(named)=profiles/../.. and expects the
+        # root gateway.sock there. Non-multiplex fallback keeps the profile home.
+        if [ "$HERMES_ADDON_MULTIPLEX_PROFILES" = "true" ] && [ "$i" = "0" ]; then
+            export HERMES_HOME="$(dirname "$(dirname "$home")")"
+        else
+            export HERMES_HOME="$home"
+        fi
         export PATH="$VENV_DIR/bin:$BASE_PATH"
         export HERMES_S6_SUPERVISED_CHILD="1"
         export HERMES_ADDON_PROFILE_HOME="$home"
