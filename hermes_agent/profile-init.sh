@@ -151,13 +151,10 @@ configure_profile_topology() {
     # Missing or not-yet-recognized keys make `config get` return nonzero.
     # Suppress that probe-only diagnostic; the guarded writer below remains
     # authoritative and fails startup on corrupt config or any write error.
-    if standalone="$(HERMES_HOME="$home" "$hermes_cli" config get gateway.standalone --json 2>/dev/null)" \
-      && [ "$standalone" = "true" ]; then
-      continue
-    fi
-
+    # Multiplex topology (#43): named profiles must NEVER be standalone; force false
+    # even if a stale config says true.
     if HERMES_HOME="$home" "$hermes_cli" config set gateway.standalone false --force; then
-      echo "[profile-init] Enabled standalone gateway compatibility for '$home'"
+      echo "[profile-init] Multiplex topology: forced gateway.standalone=false for '$home'"
     else
       status=$?
       echo "[profile-init] FATAL: could not set gateway.standalone for '$home'" >&2
