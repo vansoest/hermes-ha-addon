@@ -895,7 +895,7 @@ start_gateway_for_profile() {
         # socket must bind at the ROOT home ($HERMES_HOME/.. of profiles) because client
         # discovery resolves multiplexer_root_for(named)=profiles/../.. and expects the
         # root gateway.sock there. Non-multiplex fallback keeps the profile home.
-        if [ "$HERMES_ADDON_MULTIPLEX_PROFILES" = "true" ] && [ "$i" = "0" ]; then
+        if [ "${HERMES_ADDON_MULTIPLEX_PROFILES:-}" = "true" ] && [ "$i" = "0" ]; then
             export HERMES_HOME="$(dirname "$(dirname "$home")")"
             export HERMES_ADDON_PROFILE_HOME="$HERMES_HOME"
         else
