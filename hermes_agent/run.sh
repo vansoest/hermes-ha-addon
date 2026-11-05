@@ -897,12 +897,13 @@ start_gateway_for_profile() {
         # root gateway.sock there. Non-multiplex fallback keeps the profile home.
         if [ "$HERMES_ADDON_MULTIPLEX_PROFILES" = "true" ] && [ "$i" = "0" ]; then
             export HERMES_HOME="$(dirname "$(dirname "$home")")"
+            export HERMES_ADDON_PROFILE_HOME="$HERMES_HOME"
         else
             export HERMES_HOME="$home"
+            export HERMES_ADDON_PROFILE_HOME="$home"
         fi
         export PATH="$VENV_DIR/bin:$BASE_PATH"
         export HERMES_S6_SUPERVISED_CHILD="1"
-        export HERMES_ADDON_PROFILE_HOME="$home"
         export HERMES_ADDON_MULTIPLEX_PROFILES="true"
         export HERMES_ADDON_GATEWAY_NO_SUPERVISE="1"
         export HERMES_ADDON_SUPERVISED_CHILD="1"
