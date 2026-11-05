@@ -895,7 +895,7 @@ start_gateway_for_profile() {
         export PATH="$VENV_DIR/bin:$BASE_PATH"
         export HERMES_S6_SUPERVISED_CHILD="1"
         export HERMES_ADDON_PROFILE_HOME="$home"
-        export HERMES_ADDON_MULTIPLEX_PROFILES="false"
+        export HERMES_ADDON_MULTIPLEX_PROFILES="true"
         export HERMES_ADDON_GATEWAY_NO_SUPERVISE="1"
         export HERMES_ADDON_SUPERVISED_CHILD="1"
         export HERMES_ADDON_API_HOST="127.0.0.1"
@@ -1255,8 +1255,14 @@ configure_profile_topology "$VENV_DIR/bin/python" "$VENV_DIR/bin/hermes"
 
 install_start_hermes_wrapper
 
+# Multiplex topology (#43): ONE primary gateway serves every configured profile. Named slots
+# keep ttyd/dashboard/terminal only; nginx maps /profile/<name>/v1 to the primary API upstream.
 for i in "${!PROFILE_DIRS[@]}"; do
-    start_gateway_signal_safe "$i"
+    if [ "$i" -eq 0 ]; then
+        start_gateway_signal_safe "$i"
+    else
+        echo "[run] [${PROFILE_NAMES[$i]}] gateway served by primary multiplexer (skipped)"
+    fi
     start_ttyd_for_profile "$i"
     start_dashboard_for_profile "$i"
 done

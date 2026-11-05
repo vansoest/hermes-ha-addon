@@ -113,7 +113,7 @@ def _guard_gateway_config(gateway_config: Any, protected: dict[str, str]) -> Non
 
     def load_protected_gateway_config(*args: Any, **kwargs: Any) -> Any:
         config = original_load(*args, **kwargs)
-        config.multiplex_profiles = False
+        config.multiplex_profiles = True
         api_server = gateway_config.Platform.API_SERVER
         if not enabled:
             config.platforms.pop(api_server, None)

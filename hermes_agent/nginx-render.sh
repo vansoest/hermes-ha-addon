@@ -82,6 +82,10 @@ emit_profile_locations() {
         fi
     fi
 
+    # One-gateway topology (#43): every profile's API rides the primary (slot 0) upstream.
+    local -a API_UPSTREAM=()
+    for i in "${!PROFILE_DIRS[@]}"; do API_UPSTREAM[$i]=0; done
+
     local i prefix token token_guard
     for i in "${!PROFILE_DIRS[@]}"; do
         prefix="${PROFILE_PATH_PREFIX[$i]}"
@@ -127,7 +131,7 @@ HLOC
         # ── Profile ${i} (${PROFILE_NAMES[$i]}): API ──
         location ${prefix}/v1/ {
             ${auth_off}
-            proxy_pass http://hermes_api_${i}/v1/;
+            proxy_pass http://hermes_api_${API_UPSTREAM[$i]}/v1/;
             proxy_http_version 1.1;
             proxy_set_header Host \$host;
             proxy_set_header X-Real-IP \$remote_addr;

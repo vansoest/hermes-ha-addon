@@ -258,7 +258,7 @@ apply_env_vars_for_profile() {
   set_owned_env_var "$env_file" "API_SERVER_HOST" "127.0.0.1"
   set_owned_env_var "$env_file" "API_SERVER_PORT" "${API_PORTS[$i]}"
   set_owned_env_var "$env_file" "API_SERVER_ENABLED" "$ENABLE_API"
-  set_owned_env_var "$env_file" "GATEWAY_MULTIPLEX_PROFILES" "false"
+  set_owned_env_var "$env_file" "GATEWAY_MULTIPLEX_PROFILES" "true"
   remove_env_var "$env_file" "HERMES_S6_SUPERVISED_CHILD"
   remove_env_var "$env_file" "HERMES_HOME"
   remove_env_var "$env_file" "HERMES_GATEWAY_NO_SUPERVISE"
