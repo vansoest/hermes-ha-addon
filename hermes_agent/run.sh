@@ -902,6 +902,7 @@ start_gateway_for_profile() {
             export HERMES_HOME="$home"
             export HERMES_ADDON_PROFILE_HOME="$home"
         fi
+        echo "SUBSHELL_DUMP i=$i home=$home HERMES_HOME=$HERMES_HOME PROFILE=$HERMES_ADDON_PROFILE_HOME mux=${HERMES_ADDON_MULTIPLEX_PROFILES:-unset}" >> /run/subshell-dump.txt
         export PATH="$VENV_DIR/bin:$BASE_PATH"
         export HERMES_S6_SUPERVISED_CHILD="1"
         export HERMES_ADDON_MULTIPLEX_PROFILES="true"
