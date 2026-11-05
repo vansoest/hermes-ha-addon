@@ -1180,7 +1180,11 @@ supervise_gateway_profile() {
     local i="$1"
     local pid="${GATEWAY_PIDS[$i]:-}"
     local logger_pid="${GATEWAY_LOGGER_PIDS[$i]:-}"
-    if [ -z "$pid" ] || ! kill -0 "$pid" 2>/dev/null; then
+    # Multiplex topology (#43): named slots own no gateway process; only ttyd/dashboard.
+    if [ -z "$pid" ]; then
+        return 0
+    fi
+    if ! kill -0 "$pid" 2>/dev/null; then
         if [ -n "$pid" ]; then
             set +e; wait "$pid" 2>/dev/null; EXIT_CODE=$?; set -e
         else
