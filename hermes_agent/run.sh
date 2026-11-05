@@ -1294,7 +1294,7 @@ echo " ${HERMES_VERSION}"
 for i in "${!PROFILE_DIRS[@]}"; do
     prefix="${PROFILE_PATH_PREFIX[$i]}"
     label="${PROFILE_NAMES[$i]}"
-    echo " Profile ${label} (PID ${GATEWAY_PIDS[$i]}):"
+    echo " Profile ${label} (PID ${GATEWAY_PIDS[$i]:-served-by-primary}):"
     echo "   Hermes:    ${BASE_URL}${prefix}/hermes/"
     [ "$DASHBOARD_AVAILABLE" = "true" ] && echo "   Dashboard: ${BASE_URL}${prefix}/dashboard/"
     echo "   Terminal:  ${BASE_URL}${prefix}/terminal/"
