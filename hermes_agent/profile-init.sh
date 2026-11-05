@@ -156,7 +156,7 @@ configure_profile_topology() {
       continue
     fi
 
-    if HERMES_HOME="$home" "$hermes_cli" config set gateway.standalone true --force; then
+    if HERMES_HOME="$home" "$hermes_cli" config set gateway.standalone false --force; then
       echo "[profile-init] Enabled standalone gateway compatibility for '$home'"
     else
       status=$?
