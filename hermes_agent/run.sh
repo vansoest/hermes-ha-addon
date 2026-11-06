@@ -891,6 +891,7 @@ start_gateway_for_profile() {
     GATEWAY_READY_FILES[$i]="$ready_file"
     (
         cd "$home"
+        HERMES_ADDON_MULTIPLEX_PROFILES="${HERMES_ADDON_MULTIPLEX_PROFILES:-true}"
         # Multiplex topology (#43): slot-0 gateway IS the root multiplexer. Its control
         # socket must bind at the ROOT home ($HERMES_HOME/.. of profiles) because client
         # discovery resolves multiplexer_root_for(named)=profiles/../.. and expects the
@@ -902,8 +903,7 @@ start_gateway_for_profile() {
             export HERMES_HOME="$home"
             export HERMES_ADDON_PROFILE_HOME="$home"
         fi
-        echo "SUBSHELL_DUMP i=$i home=$home HERMES_HOME=$HERMES_HOME PROFILE=$HERMES_ADDON_PROFILE_HOME mux=${HERMES_ADDON_MULTIPLEX_PROFILES:-unset}" >> /run/subshell-dump.txt
-        export PATH="$VENV_DIR/bin:$BASE_PATH"
+                export PATH="$VENV_DIR/bin:$BASE_PATH"
         export HERMES_S6_SUPERVISED_CHILD="1"
         export HERMES_ADDON_MULTIPLEX_PROFILES="true"
         export HERMES_ADDON_GATEWAY_NO_SUPERVISE="1"
